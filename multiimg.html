@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Daraz + Amazon Zoom Full UI</title>
+
+<style>
+body{
+  font-family: Arial;
+  margin:0;
+  background:#f5f5f5;
+}
+
+/* ===== PRODUCTS ===== */
+.products{
+  display:flex;
+  gap:15px;
+  padding:20px;
+}
+
+.product{
+  background:#fff;
+  padding:15px;
+  border-radius:10px;
+  width:200px;
+  text-align:center;
+}
+
+.product img{
+  width:100%;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.add-btn{
+  margin-top:10px;
+  padding:8px;
+  background:#2196f3;
+  color:#fff;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+}
+
+/* QUANTITY */
+.quantity{
+  display:none;
+  justify-content:center;
+  gap:10px;
+  margin-top:10px;
+}
+
+.quantity button{
+  width:25px;
+  height:25px;
+  border-radius:50%;
+  border:none;
+  background:#333;
+  color:#fff;
+}
+
+/* CART ICON */
+.cart-icon{
+  position:fixed;
+  top:15px;
+  right:15px;
+  width:50px;
+  height:50px;
+  background:#fff;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  box-shadow:0 2px 10px rgba(0,0,0,0.2);
+}
+
+.badge{
+  position:absolute;
+  top:-5px;
+  right:-5px;
+  background:red;
+  color:#fff;
+  font-size:12px;
+  padding:2px 6px;
+  border-radius:50%;
+}
+
+/* CART DRAWER */
+.drawer{
+  position:fixed;
+  top:0;
+  right:-400px;
+  width:350px;
+  height:100%;
+  background:#fff;
+  box-shadow:-3px 0 10px rgba(0,0,0,0.2);
+  padding:15px;
+  transition:0.3s;
+  display:flex;
+  flex-direction:column;
+}
+
+.drawer.open{ right:0; }
+
+.header{
+  display:flex;
+  justify-content:space-between;
+}
+
+.item{
+  display:flex;
+  justify-content:space-between;
+  padding:10px 0;
+  border-bottom:1px solid #eee;
+}
+
+.footer{
+  margin-top:auto;
+}
+
+.btn{
+  width:100%;
+  padding:12px;
+  background:green;
+  color:#fff;
+  border:none;
+}
+
+/* ===== MODAL ===== */
+.modal{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
+  display:none;
+  justify-content:center;
+  align-items:center;
+}
+
+.modal-box{
+  background:#fff;
+  width:350px;
+  padding:15px;
+  border-radius:10px;
+  text-align:center;
+  position:relative;
+}
+
+/* IMAGE BOX */
+.zoom-container{
+  position:relative;
+  overflow:hidden;
+}
+
+.zoom-container img{
+  width:100%;
+  border-radius:10px;
+}
+
+/* LENS */
+#lens{
+  position:absolute;
+  width:120px;
+  height:120px;
+  border:2px solid #2196f3;
+  display:none;
+  background-repeat:no-repeat;
+  pointer-events:none;
+  border-radius:10px;
+}
+
+.nav{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background:rgba(0,0,0,0.5);
+  color:#fff;
+  border:none;
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  cursor:pointer;
+}
+
+.left{left:5px;}
+.right{right:5px;}
+
+.thumbs{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  margin-top:10px;
+}
+
+.thumbs img{
+  width:50px;
+  height:50px;
+  border-radius:5px;
+  cursor:pointer;
+  border:2px solid transparent;
+}
+
+.thumbs img.active{
+  border:2px solid #2196f3;
+}
+
+.close{
+  position:absolute;
+  top:5px;
+  right:10px;
+  cursor:pointer;
+}
+
+.modal-btn{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  background:green;
+  color:#fff;
+  border:none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- CART ICON -->
+<div class="cart-icon" onclick="toggleCart()">
+  🛒
+  <span class="badge" id="count">0</span>
+</div>
+
+<!-- PRODUCTS -->
+<div class="products">
+
+  <div class="product" data-id="1">
+    <img src="https://via.placeholder.com/200"
+    onclick="openModal(1,'POP Canvas',399,[
+      'https://www.google.com/imgres?q=product%20360%20pictures&imgurl=https%3A%2F%2Fwww.webrotate360.com%2Fmedia%2F25662%2Fwebrotate-360-product-views-share.png&imgrefurl=https%3A%2F%2Fwww.webrotate360.com%2F&docid=DqmBe_sf9omDRM&tbnid=wxFH4WMJTPWqDM&vet=12ahUKEwjr8YrFjoOUAxXkWUEAHXGoInwQnPAOegQIGRAB..i&w=1200&h=628&hcb=2&ved=2ahUKEwjr8YrFjoOUAxXkWUEAHXGoInwQnPAOegQIGRAB',
+      'https://www.google.com/imgres?q=product%20360%20pictures&imgurl=https%3A%2F%2F3dcloud.com%2Fwp-content%2Fuploads%2F2022%2F12%2FFurniture-Photoshoot-and-360-Result.jpg.webp&imgrefurl=https%3A%2F%2F3dcloud.com%2F360-product-photography%2F&docid=PX_ouPfZ7VPOTM&tbnid=TUXf3EItEQbAsM&vet=12ahUKEwjr8YrFjoOUAxXkWUEAHXGoInwQnPAOegQIIBAB..i&w=1200&h=675&hcb=2&ved=2ahUKEwjr8YrFjoOUAxXkWUEAHXGoInwQnPAOegQIIBAB',
+      'https://www.google.com/imgres?q=product%20360%20pictures&imgurl=https%3A%2F%2Fwww.ortery.com%2Fwp-content%2Fuploads%2F2019%2F11%2Fortery-360-large-product-photography-furniture.jpg&imgrefurl=https%3A%2F%2Fwww.ortery.com%2F360-product-photography%2F&docid=FOTfl4vCJzxmjM&tbnid=RA6kWkib0lR7mM&vet=12ahUKEwjr8YrFjoOUAxXkWUEAHXGoInwQnPAOegQIGhAB..i&w=1523&h=760&hcb=2&ved=2ahUKEwjr8YrFjoOUAxXkWUEAHXGoInwQnPAOegQIGhAB'
+    ])">
+
+    <h4>POP Canvas</h4>
+    <p>PKR 399</p>
+
+    <button class="add-btn" onclick="add(1)">Add</button>
+
+    <div class="quantity" id="q-1">
+      <button onclick="dec(1)">-</button>
+      <span id="val-1">1</span>
+      <button onclick="inc(1)">+</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- CART -->
+<div class="drawer" id="drawer">
+
+  <div class="header">
+    <h3>Cart</h3>
+    <button onclick="toggleCart()">✖</button>
+  </div>
+
+  <div id="items"></div>
+
+  <div class="footer">
+    <h3>Total: PKR <span id="total">0</span></h3>
+    <button class="btn" onclick="checkout()">Checkout</button>
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+
+  <div class="modal-box">
+
+    <span class="close" onclick="closeModal()">✖</span>
+
+    <div class="zoom-container" id="zoomBox" onmousemove="zoomMove(event)" onmouseleave="hideLens()">
+
+      <button class="nav left" onclick="prevImg()">❮</button>
+
+      <img id="m-img">
+
+      <button class="nav right" onclick="nextImg()">❯</button>
+
+      <div id="lens"></div>
+
+    </div>
+
+    <div id="thumbs" class="thumbs"></div>
+
+    <h3 id="m-title"></h3>
+    <p id="m-price"></p>
+
+    <button class="modal-btn" id="m-btn">Add</button>
+
+  </div>
+
+</div>
+
+<script>
+
+const prices={1:399};
+let cart=JSON.parse(localStorage.getItem("cart"))||{};
+
+let images=[];
+let index=0;
+
+/* SAVE */
+function save(){
+  localStorage.setItem("cart",JSON.stringify(cart));
+}
+
+/* UPDATE CART */
+function update(id,type){
+
+  let q=cart[id]||0;
+
+  if(type==="inc") q++;
+  if(type==="dec") q--;
+
+  if(q<=0) delete cart[id];
+  else cart[id]=q;
+
+  save();
+  render();
+  sync();
+}
+
+/* ADD */
+function add(id){
+  update(id,"inc");
+  document.getElementById("q-"+id).style.display="flex";
+}
+
+/* INC DEC */
+function inc(id){update(id,"inc");}
+function dec(id){update(id,"dec");}
+
+/* CART DRAWER */
+function toggleCart(){
+  document.getElementById("drawer").classList.toggle("open");
+}
+
+/* RENDER */
+function render(){
+
+  let box=document.getElementById("items");
+  let total=0,count=0;
+
+  box.innerHTML="";
+
+  for(let id in cart){
+    let qty=cart[id];
+    total+=qty*prices[id];
+    count+=qty;
+
+    box.innerHTML+=`
+      <div class="item">
+        <span>Item ${id} x ${qty}</span>
+        <span>PKR ${qty*prices[id]}</span>
+      </div>
+    `;
+  }
+
+  document.getElementById("total").innerText=total;
+  document.getElementById("count").innerText=count;
+
+  if(count===0) box.innerHTML="Cart is empty";
+}
+
+/* SYNC */
+function sync(){
+  for(let id in cart){
+    let q=document.getElementById("q-"+id);
+    if(q) q.style.display="flex";
+  }
+}
+
+/* MODAL */
+function openModal(id,title,price,imgs){
+  images=imgs;
+  index=0;
+
+  document.getElementById("modal").style.display="flex";
+
+  document.getElementById("m-title").innerText=title;
+  document.getElementById("m-price").innerText="PKR "+price;
+
+  document.getElementById("m-btn").onclick=function(){
+    add(id);
+    closeModal();
+  };
+
+  renderGallery();
+}
+
+function renderGallery(){
+  let img=document.getElementById("m-img");
+  img.src=images[index];
+
+  let t=document.getElementById("thumbs");
+  t.innerHTML="";
+
+  images.forEach((i,j)=>{
+    t.innerHTML+=`
+      <img src="${i}" onclick="setImg(${j})" class="${j===index?'active':''}">
+    `;
+  });
+}
+
+function setImg(i){index=i;renderGallery();}
+function nextImg(){index=(index+1)%images.length;renderGallery();}
+function prevImg(){index=(index-1+images.length)%images.length;renderGallery();}
+
+/* ZOOM LENS */
+function zoomMove(e){
+
+  let img=document.getElementById("m-img");
+  let lens=document.getElementById("lens");
+
+  let rect=img.getBoundingClientRect();
+
+  let x=e.clientX-rect.left;
+  let y=e.clientY-rect.top;
+
+  let w=img.width;
+  let h=img.height;
+
+  lens.style.display="block";
+  lens.style.left=(x-60)+"px";
+  lens.style.top=(y-60)+"px";
+
+  lens.style.backgroundImage=`url(${img.src})`;
+  lens.style.backgroundSize=(w*2)+"px "+(h*2)+"px";
+  lens.style.backgroundPosition=`${(x/w)*100}% ${(y/h)*100}%`;
+}
+
+function hideLens(){
+  document.getElementById("lens").style.display="none";
+}
+
+/* CLOSE MODAL */
+function closeModal(){
+  document.getElementById("modal").style.display="none";
+}
+
+/* CHECKOUT */
+function checkout(){
+  alert("Order placed 🎉");
+  cart={};
+  save();
+  render();
+  toggleCart();
+}
+
+/* INIT */
+render();
+
+</script>
+
+</body>
+</html>
