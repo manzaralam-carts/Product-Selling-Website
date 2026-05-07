@@ -12,7 +12,7 @@
 .slider-item,
 #billboard .main-slider,
 .slick-initialized {
-    margin-top: 0 !important !important;
+    margin-top: 0 !important;
     padding-top: 0 !important;
 }
 
