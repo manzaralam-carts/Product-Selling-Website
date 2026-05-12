@@ -52,6 +52,7 @@
             </ul>
           </li>
           <li><a href="#special-offer">Offers</a></li>
+          <li><a href="#reviews">Reviews</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
@@ -973,6 +974,55 @@
     </div>
   </section>
 
+  <!-- ========== REVIEWS ========== -->
+<section id="reviews">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-label">What Customers Say</span>
+      <h2 class="section-title"><span>Customer</span> Reviews</h2>
+    </div>
+    <div class="reviews-grid">
+ 
+      <div class="review-card">
+        <div class="review-avatar">
+          <div class="avatar-placeholder">A</div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Absolutely beautiful handmade products! The POP on Canvas I ordered exceeded my expectations. You can feel the love and effort put into every piece. Will definitely order again!"</p>
+        <div class="review-author">
+          <strong>Amna Khalid</strong>
+          <span>Karachi, Pakistan · 12/03/25</span>
+        </div>
+      </div>
+ 
+      <div class="review-card featured">
+        <div class="review-avatar">
+          <div class="avatar-placeholder">Z</div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"I bought the Bottle Flower Vase as a gift and everyone loved it! Knowing it was made by an autistic artist made it even more special. Spectrum Creations is doing amazing work."</p>
+        <div class="review-author">
+          <strong>Zara Ahmed</strong>
+          <span>Islamabad, Pakistan · 05/01/25</span>
+        </div>
+      </div>
+ 
+      <div class="review-card">
+        <div class="review-avatar">
+          <div class="avatar-placeholder">M</div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"The tote bag I ordered has stunning calligraphy. Fast delivery, great packaging, and a truly unique product. I love that my purchase supports such a meaningful cause!"</p>
+        <div class="review-author">
+          <strong>Mohammad Bilal</strong>
+          <span>Lahore, Pakistan · 28/02/25</span>
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+</section>
+
   <!--  ABOUT  -->
   <section id="about">
     <div class="container">
@@ -1187,6 +1237,8 @@
         ".offer-card",
         ".about-grid",
         ".contact-grid",
+        "#reviews .section-head",
+        "#reviews .review-card",
         "#footer .footer-top",
         "#footer .footer-bottom",
         ".map-container"
@@ -1228,6 +1280,7 @@
 
       els.forEach((el) => obs.observe(el));
     })();
+    
 
     // ===== MOBILE COLLECTIONS DROPDOWN TOGGLE =====
     document.querySelectorAll('.has-dropdown > a').forEach(link => {
@@ -1494,8 +1547,12 @@
               </div>
               <div class="cart-item-meta">
                 <div class="cart-item-title">${p.name}</div>
-                <div class="cart-item-sub">Qty: <strong>${qty}</strong></div>
-                <div class="cart-remove" onclick="removeItem(${id})"><i class="bi bi-trash3"></i> Remove</div>
+               <div class="cart-qty-ctrl">
+  <button onclick="dec(${id})" aria-label="Decrease quantity">−</button>
+  <span>${qty}</span>
+  <button onclick="inc(${id})" aria-label="Increase quantity">+</button>
+</div>
+<div class="cart-remove" onclick="removeItem(${id})"><i class="bi bi-trash3"></i> Remove</div>
               </div>
             </div>
             <div class="cart-item-right">
@@ -1776,6 +1833,7 @@
         prevArrow: '.slider-btn.prev', nextArrow: '.slider-btn.next', fade: true
       });
     }
+    
   </script>
 
 </body>
