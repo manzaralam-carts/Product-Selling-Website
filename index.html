@@ -1784,7 +1784,7 @@
         e.target.closest(".btn-primary-sc");
       if (isAdd) return;
 
-      const card = e.target.closest(".product-card[data-id], .pop-card[data-id], .best-img-wrap[data-id]");
+      const card = e.target.closest(".product-card[data-id], .pop-card[data-id], .offer-card[data-id], .best-img-wrap[data-id]");
       if (!card) return;
 
       const id = Number(card.getAttribute("data-id"));
